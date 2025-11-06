@@ -1,21 +1,21 @@
 ---
 const technologies = [
-  { name: "HTML 5", icon: "/assets/tech/html.png" },
-  { name: "CSS 3", icon: "/assets/tech/css.png" },
-  { name: "JavaScript", icon: "/assets/tech/javascript.png" },
-  { name: "TypeScript", icon: "/assets/tech/typescript.png" },
-  { name: "React", icon: "/assets/tech/reactjs.png" },
-  { name: "Angular", icon: "/assets/tech/angular.png" },
-  { name: "Node.js", icon: "/assets/tech/nodejs.png" },
-  { name: ".NET", icon: "/assets/tech/net.png" },
-  { name: "C#", icon: "/assets/tech/csharp.png" },
-  { name: "Git", icon: "/assets/tech/git.png" },
-  { name: "Docker", icon: "/assets/tech/docker.png" },
-  { name: "PostgreSQL", icon: "/assets/tech/postgre.png" },
-  { name: "MySQL", icon: "/assets/tech/mysql.png" },
-  { name: "Tailwind", icon: "/assets/tech/tailwind.png" },
-  { name: "Figma", icon: "/assets/tech/figma.png" },
-  { name: "Postman", icon: "/assets/tech/postman.png" }
+  { name: "HTML 5", icon: "/assets/tech/html.png", category: "Frontend", color: "#60a5fa" },
+  { name: "CSS 3", icon: "/assets/tech/css.png", category: "Frontend", color: "#60a5fa" },
+  { name: "JavaScript", icon: "/assets/tech/javascript.png", category: "Frontend", color: "#fbbf24" },
+  { name: "TypeScript", icon: "/assets/tech/typescript.png", category: "Frontend", color: "#60a5fa" },
+  { name: "Tailwind CSS", icon: "/assets/tech/tailwind.png", category: "Frontend", color: "#38bdf8" },
+  { name: "C#", icon: "/assets/tech/csharp.png", category: "Backend", color: "#a855f7" },
+  { name: "Node JS", icon: "/assets/tech/nodejs.png", category: "Backend", color: "#84cc16" },
+  { name: "Angular", icon: "/assets/tech/angular.png", category: "Framework", color: "#dc2626" },
+  { name: ".NET", icon: "/assets/tech/net.png", category: "Framework", color: "#8b5cf6" },
+  { name: "Git", icon: "/assets/tech/git.png", category: "Tools", color: "#f97316" },
+  { name: "Visual Studio", icon: "/assets/tech/visualestudio.png", category: "Tools", color: "#3b82f6" },
+  { name: "Postman", icon: "/assets/tech/postman.png", category: "Tools", color: "#f97316" },
+  { name: "Docker", icon: "/assets/tech/docker.png", category: "DevOps", color: "#0ea5e9" },
+  { name: "Figma", icon: "/assets/tech/figma.png", category: "Design", color: "#a855f7" },
+  { name: "PostgreSQL", icon: "/assets/tech/postgre.png", category: "Database", color: "#06b6d4" },
+  { name: "MySQL", icon: "/assets/tech/mysql.png", category: "Database", color: "#3b82f6" }
 ];
 ---
 
@@ -33,11 +33,12 @@ const technologies = [
 
     <div class="tech-grid">
       {technologies.map((tech, index) => (
-        <div class="tech-card scroll-animate" style={`animation-delay: ${index * 0.05}s`}>
+        <div class="tech-card scroll-animate" style={`animation-delay: ${index * 0.05}s; --card-color: ${tech.color}`}>
           <div class="tech-icon-wrapper">
             <img src={tech.icon} alt={tech.name} class="tech-icon-img" loading="lazy" />
           </div>
           <h3 class="tech-name">{tech.name}</h3>
+          <span class="tech-category">{tech.category}</span>
         </div>
       ))}
     </div>
@@ -77,24 +78,27 @@ const technologies = [
 
   .tech-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
   }
 
   .tech-card {
-    background: var(--color-tertiary);
-    padding: 1.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 2rem 1.5rem;
     border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-card);
+    border: 2px solid transparent;
+    border-top: 3px solid var(--card-color);
+    box-shadow: var(--glass-shadow);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.75rem;
     transition: all var(--transition-normal);
     position: relative;
-    overflow: hidden;
-    aspect-ratio: 1;
+    overflow: visible;
   }
 
   .tech-card::before {
@@ -104,18 +108,26 @@ const technologies = [
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--gradient-card);
+    border-radius: var(--border-radius-md);
+    padding: 2px;
+    background: linear-gradient(180deg, var(--card-color), transparent);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
     opacity: 0;
     transition: opacity var(--transition-normal);
   }
 
   .tech-card:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    border-color: var(--card-color);
   }
 
   .tech-card:hover::before {
-    opacity: 1;
+    opacity: 0.5;
   }
 
   .tech-icon-wrapper {
@@ -124,36 +136,65 @@ const technologies = [
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+    border: 2px solid var(--card-color);
     position: relative;
-    z-index: 1;
-    transition: transform var(--transition-normal);
-    padding: 0.75rem;
+    transition: all var(--transition-normal);
+    padding: 1rem;
   }
 
   .tech-card:hover .tech-icon-wrapper {
     transform: scale(1.1);
+    box-shadow: 0 0 20px var(--card-color);
+    border-color: var(--card-color);
   }
 
   .tech-icon-img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
   }
 
   .tech-name {
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: 1.125rem;
+    font-weight: 700;
     color: var(--color-text-primary);
     text-align: center;
-    position: relative;
-    z-index: 1;
+    margin: 0;
+  }
+
+  .tech-category {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--card-color);
+    text-align: center;
+    padding: 0.25rem 0.75rem;
+    background: var(--card-color);
+    background: linear-gradient(135deg, var(--card-color), transparent);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border: 1px solid var(--card-color);
+    border-radius: var(--border-radius-full);
+    opacity: 0.8;
+  }
+
+  @media (max-width: 1024px) {
+    .tech-grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.25rem;
+    }
   }
 
   @media (max-width: 768px) {
     .tech-grid {
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .tech-card {
+      padding: 1.5rem 1rem;
     }
 
     .tech-icon-wrapper {
@@ -162,23 +203,36 @@ const technologies = [
     }
 
     .tech-name {
-      font-size: 0.875rem;
+      font-size: 1rem;
+    }
+
+    .tech-category {
+      font-size: 0.75rem;
     }
   }
 
   @media (max-width: 480px) {
     .tech-grid {
-      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 0.875rem;
     }
 
     .tech-card {
-      padding: 1rem;
+      padding: 1.25rem 0.75rem;
     }
 
     .tech-icon-wrapper {
       width: 50px;
       height: 50px;
+    }
+
+    .tech-name {
+      font-size: 0.875rem;
+    }
+
+    .tech-category {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
     }
   }
 </style>

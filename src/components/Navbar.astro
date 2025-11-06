@@ -5,6 +5,7 @@ const navLinks = [
   { id: "work", title: "Experiencia" },
   { id: "projects", title: "Proyectos" },
   { id: "contact", title: "Contacto" },
+  { id: "terminal", title: "Terminal" },
 ];
 ---
 
@@ -24,11 +25,30 @@ const navLinks = [
       ))}
     </ul>
 
-    <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation menu">
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-    </button>
+    <div class="navbar-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="5" stroke-width="2"/>
+          <line x1="12" y1="1" x2="12" y2="3" stroke-width="2"/>
+          <line x1="12" y1="21" x2="12" y2="23" stroke-width="2"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke-width="2"/>
+          <line x1="1" y1="12" x2="3" y2="12" stroke-width="2"/>
+          <line x1="21" y1="12" x2="23" y2="12" stroke-width="2"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke-width="2"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke-width="2"/>
+        </svg>
+        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-width="2"/>
+        </svg>
+      </button>
+
+      <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -38,6 +58,17 @@ const navLinks = [
     const navbarToggle = document.getElementById('navbar-toggle');
     const navbarMenu = document.getElementById('navbar-menu');
     const navbarLinks = document.querySelectorAll('.navbar-link');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    // Theme toggle
+    themeToggle?.addEventListener('click', () => {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    });
 
     // Toggle mobile menu
     navbarToggle?.addEventListener('click', () => {
@@ -74,7 +105,7 @@ const navLinks = [
     window.addEventListener('scroll', () => {
       let current = '';
       sections.forEach(section => {
-        const sectionTop = section.offsetTop;
+        const sectionTop = (section as HTMLElement).offsetTop;
         const sectionHeight = section.clientHeight;
         if (window.scrollY >= sectionTop - 200) {
           current = section.getAttribute('id') || '';
@@ -104,9 +135,11 @@ const navLinks = [
   }
 
   .navbar.scrolled {
-    background: rgba(5, 8, 22, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     padding: 0.875rem 0;
   }
 
@@ -176,6 +209,55 @@ const navLinks = [
     width: 100%;
   }
 
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-primary);
+    transition: all var(--transition-normal);
+    position: relative;
+  }
+
+  .theme-toggle:hover {
+    transform: scale(1.1);
+    background: var(--color-accent);
+    color: white;
+  }
+
+  .sun-icon {
+    position: absolute;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+  }
+
+  .moon-icon {
+    position: absolute;
+    opacity: 1;
+    transition: opacity var(--transition-normal);
+  }
+
+  [data-theme="light"] .sun-icon {
+    opacity: 1;
+  }
+
+  [data-theme="light"] .moon-icon {
+    opacity: 0;
+  }
+
   .navbar-toggle {
     display: none;
     flex-direction: column;
@@ -219,8 +301,10 @@ const navLinks = [
       width: 70%;
       max-width: 300px;
       height: 100vh;
-      background: rgba(21, 16, 48, 0.98);
+      background: var(--glass-bg);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-left: 1px solid var(--glass-border);
       flex-direction: column;
       justify-content: center;
       align-items: center;

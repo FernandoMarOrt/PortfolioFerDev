@@ -1,0 +1,482 @@
+---
+---
+
+<section class="terminal-section scroll-animate" id="terminal">
+  <div class="container">
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <div class="terminal-buttons">
+          <span class="terminal-button close"></span>
+          <span class="terminal-button minimize"></span>
+          <span class="terminal-button maximize"></span>
+        </div>
+        <div class="terminal-title">fernando@portfolio:~$</div>
+      </div>
+      
+      <div class="terminal-body" id="terminal-body">
+        <div class="terminal-line">
+          <span class="terminal-prompt">fernando@portfolio:~$</span>
+          <span class="terminal-text typing-animation">cat welcome.txt</span>
+        </div>
+        <div class="terminal-output">
+          <p class="terminal-ascii">
+            ╔═══════════════════════════════════════════╗<br/>
+            ║   ¡Bienvenido a mi Portfolio Terminal!   ║<br/>
+            ╚═══════════════════════════════════════════╝
+          </p>
+          <p>Escribe un comando o selecciona una opción:</p>
+          <div class="terminal-menu">
+            <button class="terminal-option" data-command="about">
+              <span class="option-number">1.</span> about - Información sobre mí
+            </button>
+            <button class="terminal-option" data-command="skills">
+              <span class="option-number">2.</span> skills - Ver mis habilidades
+            </button>
+            <button class="terminal-option" data-command="projects">
+              <span class="option-number">3.</span> projects - Mis proyectos
+            </button>
+            <button class="terminal-option" data-command="contact">
+              <span class="option-number">4.</span> contact - Información de contacto
+            </button>
+            <button class="terminal-option" data-command="github">
+              <span class="option-number">5.</span> github - Visitar mi GitHub
+            </button>
+            <button class="terminal-option" data-command="clear">
+              <span class="option-number">6.</span> clear - Limpiar terminal
+            </button>
+          </div>
+        </div>
+        
+        <div class="terminal-input-line">
+          <span class="terminal-prompt">fernando@portfolio:~$</span>
+          <input 
+            type="text" 
+            class="terminal-input" 
+            id="terminal-input"
+            placeholder="Escribe un comando..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <span class="terminal-cursor">_</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const terminalBody = document.getElementById('terminal-body');
+  const terminalInput = document.getElementById('terminal-input') as HTMLInputElement;
+  const terminalOptions = document.querySelectorAll('.terminal-option');
+
+  const commands = {
+    about: () => `
+╔═══════════════════════════════════════════════════╗
+║              SOBRE MÍ                            ║
+╚═══════════════════════════════════════════════════╝
+
+Nombre: Fernando Márquez
+Rol: Full Stack Developer
+Experiencia: Desarrollo de aplicaciones web modernas
+Especialización: Angular, .NET, React, Node.js
+
+Me apasiona crear soluciones tecnológicas que 
+resuelvan problemas reales y mejoren la experiencia
+del usuario.
+`,
+    skills: () => `
+╔═══════════════════════════════════════════════════╗
+║              MIS HABILIDADES                     ║
+╚═══════════════════════════════════════════════════╝
+
+Frontend:
+  ✓ HTML5, CSS3, JavaScript, TypeScript
+  ✓ Angular, React
+  ✓ Tailwind CSS
+
+Backend:
+  ✓ .NET, C#
+  ✓ Node.js, Express
+
+Database:
+  ✓ PostgreSQL, MySQL
+
+DevOps:
+  ✓ Docker, Git
+`,
+    projects: () => `
+╔═══════════════════════════════════════════════════╗
+║              MIS PROYECTOS                       ║
+╚═══════════════════════════════════════════════════╝
+
+Visita la sección de proyectos arriba ↑
+o escribe 'github' para ver mi repositorio.
+`,
+    contact: () => `
+╔═══════════════════════════════════════════════════╗
+║              CONTACTO                            ║
+╚═══════════════════════════════════════════════════╝
+
+📧 Email: fernando@example.com
+💼 LinkedIn: linkedin.com/in/fernando
+🐙 GitHub: github.com/FernandoMarOrt
+
+¡No dudes en contactarme!
+`,
+    github: () => {
+      window.open('https://github.com/FernandoMarOrt', '_blank');
+      return '🚀 Abriendo GitHub...';
+    },
+    help: () => `
+Comandos disponibles:
+  - about      : Información sobre mí
+  - skills     : Ver mis habilidades
+  - projects   : Mis proyectos
+  - contact    : Información de contacto
+  - github     : Visitar mi GitHub
+  - clear      : Limpiar terminal
+  - help       : Mostrar esta ayuda
+`,
+    clear: () => 'CLEAR'
+  };
+
+  function addOutput(text: string, isCommand = false) {
+    const outputDiv = document.createElement('div');
+    outputDiv.className = isCommand ? 'terminal-line' : 'terminal-output';
+    
+    if (isCommand) {
+      outputDiv.innerHTML = `
+        <span class="terminal-prompt">fernando@portfolio:~$</span>
+        <span class="terminal-text">${text}</span>
+      `;
+    } else {
+      outputDiv.innerHTML = `<pre>${text}</pre>`;
+    }
+    
+    const inputLine = document.querySelector('.terminal-input-line');
+    if (inputLine && inputLine.parentNode) {
+      inputLine.parentNode.insertBefore(outputDiv, inputLine);
+    }
+    
+    // Scroll to bottom
+    if (terminalBody) {
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+  }
+
+  function executeCommand(command: string) {
+    const cmd = command.toLowerCase().trim();
+    
+    addOutput(command, true);
+    
+    if (cmd === 'clear') {
+      // Clear all outputs except the input line
+      const outputs = terminalBody?.querySelectorAll('.terminal-line, .terminal-output');
+      outputs?.forEach((output, index) => {
+        if (index > 0) { // Keep the first welcome message
+          output.remove();
+        }
+      });
+      return;
+    }
+    
+    if (commands[cmd as keyof typeof commands]) {
+      const result = commands[cmd as keyof typeof commands]();
+      if (result !== 'CLEAR') {
+        addOutput(result);
+      }
+    } else if (cmd) {
+      addOutput(`Command not found: ${cmd}\nType 'help' for available commands.`);
+    }
+  }
+
+  // Handle input
+  terminalInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const command = terminalInput.value;
+      if (command.trim()) {
+        executeCommand(command);
+        terminalInput.value = '';
+      }
+    }
+  });
+
+  // Handle option clicks
+  terminalOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const command = option.getAttribute('data-command');
+      if (command) {
+        executeCommand(command);
+      }
+    });
+  });
+
+  // Focus input when clicking on terminal
+  terminalBody?.addEventListener('click', () => {
+    terminalInput?.focus();
+  });
+
+  // Auto-focus on load
+  setTimeout(() => {
+    terminalInput?.focus();
+  }, 500);
+</script>
+
+<style>
+  .terminal-section {
+    position: relative;
+    padding: 6rem 0;
+  }
+
+  .terminal-window {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(15, 15, 25, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+  }
+
+  .terminal-header {
+    background: rgba(30, 30, 40, 0.9);
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .terminal-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .terminal-button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .terminal-button.close {
+    background: #ff5f56;
+  }
+
+  .terminal-button.minimize {
+    background: #ffbd2e;
+  }
+
+  .terminal-button.maximize {
+    background: #27c93f;
+  }
+
+  .terminal-title {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+  }
+
+  .terminal-body {
+    padding: 1.5rem;
+    min-height: 400px;
+    max-height: 600px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .terminal-body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .terminal-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .terminal-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+
+  .terminal-line {
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .terminal-prompt {
+    color: #22c55e;
+    font-weight: 600;
+  }
+
+  .terminal-text {
+    color: #ffffff;
+  }
+
+  .terminal-output {
+    margin: 1rem 0;
+    color: #ddd;
+  }
+
+  .terminal-output pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    font-family: 'Courier New', monospace;
+  }
+
+  .terminal-ascii {
+    color: #60a5fa;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .terminal-menu {
+    display: grid;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .terminal-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    color: #ddd;
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .terminal-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-left-color: #60a5fa;
+    transform: translateX(5px);
+  }
+
+  .option-number {
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+
+  .terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    padding: 0;
+  }
+
+  .terminal-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .terminal-cursor {
+    color: var(--color-accent);
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 49% {
+      opacity: 1;
+    }
+    50%, 100% {
+      opacity: 0;
+    }
+  }
+
+  .typing-animation {
+    overflow: hidden;
+    border-right: 2px solid var(--color-accent);
+    white-space: nowrap;
+    animation: typing 2s steps(20) 0.5s forwards, blink-caret 0.75s step-end infinite;
+    max-width: 0;
+  }
+
+  @keyframes typing {
+    from {
+      max-width: 0;
+    }
+    to {
+      max-width: 100%;
+    }
+  }
+
+  @keyframes blink-caret {
+    from, to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: var(--color-accent);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .terminal-section {
+      padding: 4rem 0;
+    }
+
+    .terminal-window {
+      margin: 0 1rem;
+    }
+
+    .terminal-body {
+      padding: 1rem;
+      font-size: 0.8rem;
+      min-height: 300px;
+      max-height: 500px;
+    }
+
+    .terminal-option {
+      font-size: 0.8rem;
+      padding: 0.6rem 0.75rem;
+    }
+
+    .terminal-ascii {
+      font-size: 0.7rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .terminal-header {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .terminal-button {
+      width: 10px;
+      height: 10px;
+    }
+
+    .terminal-title {
+      font-size: 0.75rem;
+    }
+
+    .terminal-body {
+      font-size: 0.75rem;
+    }
+
+    .terminal-option {
+      font-size: 0.75rem;
+      padding: 0.5rem;
+    }
+  }
+</style>

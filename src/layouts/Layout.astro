@@ -5,8 +5,8 @@ interface Props {
 }
 
 const { 
-	title = 'Fernando Márquez - Full Stack Developer', 
-	description = 'Portfolio profesional de Fernando Márquez, desarrollador Full Stack especializado en Angular, .NET, React y tecnologías modernas.' 
+	title = 'Fernando Martinez - Full Stack Developer', 
+	description = 'Portfolio profesional de Fernando Martinez, desarrollador Full Stack especializado en Angular y .NET.' 
 } = Astro.props;
 ---
 
@@ -19,7 +19,7 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		
 		<!-- SEO Meta Tags -->
-		<meta name="author" content="Fernando Márquez" />
+		<meta name="author" content="Fernando Martinez" />
 		<meta name="keywords" content="desarrollador full stack, programador web, Angular, .NET, React, TypeScript, JavaScript" />
 		
 		<!-- Open Graph / Facebook -->
@@ -39,6 +39,15 @@ const {
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+		
+		<!-- Theme Initialization (Prevent Flash) -->
+		<script is:inline>
+			// Load theme before page renders to prevent flash
+			(function() {
+				const theme = localStorage.getItem('theme') || 'dark';
+				document.documentElement.setAttribute('data-theme', theme);
+			})();
+		</script>
 		
 		<title>{title}</title>
 	</head>

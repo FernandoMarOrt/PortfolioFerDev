@@ -1,0 +1,183 @@
+---
+const services = [
+  {
+    title: "Desarrollador Web",
+    description: "Creación de aplicaciones web modernas y responsivas con las últimas tecnologías",
+    icon: "/assets/web2.png"
+  },
+  {
+    title: "Desarrollador Angular",
+    description: "Desarrollo de aplicaciones robustas y escalables con Angular y TypeScript",
+    icon: "/assets/angular.png"
+  },
+  {
+    title: "Desarrollador Backend",
+    description: "APIs REST y microservicios con .NET y Node.js para soluciones escalables",
+    icon: "/assets/backend.png"
+  },
+  {
+    title: "Desarrollador .NET",
+    description: "Aplicaciones empresariales con C# y el ecosistema .NET",
+    icon: "/assets/creator.png"
+  }
+];
+---
+
+<section class="about scroll-animate" id="about">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Sobre mi.</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <p class="about-description">
+      Soy un programador full stack apasionado por crear experiencias digitales excepcionales. 
+      Mi enfoque se centra en desarrollar soluciones innovadoras y escalables que combinan 
+      diseño elegante con funcionalidad robusta.
+    </p>
+
+    <p class="about-description">
+      Me destaco por mi capacidad de adaptación rápida a nuevas tecnologías, mi enfoque en el 
+      trabajo colaborativo y mi compromiso constante con la excelencia en cada proyecto que emprendo.
+    </p>
+
+    <div class="services-grid">
+      {services.map((service, index) => (
+        <div class="service-card scroll-animate" style={`animation-delay: ${index * 0.1}s`}>
+          <div class="service-icon-wrapper">
+            <img src={service.icon} alt={service.title} class="service-icon-img" loading="lazy" />
+          </div>
+          <h3 class="service-title">{service.title}</h3>
+          <p class="service-description">{service.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    position: relative;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3.75rem);
+    font-weight: 800;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-line {
+    width: 100px;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+  }
+
+  .about-description {
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    max-width: 900px;
+    margin-bottom: 1.5rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .service-card {
+    background: var(--color-tertiary);
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-card);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+  }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .service-card:hover::before {
+    opacity: 1;
+  }
+
+  .service-icon-wrapper {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1rem;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-normal);
+  }
+
+  .service-card:hover .service-icon-wrapper {
+    transform: scale(1.1);
+  }
+
+  .service-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+  }
+
+  .service-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .service-description {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      padding: 1.5rem;
+    }
+
+    .service-icon-wrapper {
+      width: 80px;
+      height: 80px;
+    }
+  }
+</style>

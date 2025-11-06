@@ -1,0 +1,307 @@
+---
+const experiences = [
+  {
+    title: "Desarrollador Web Full Stack",
+    company: "Bimaxpro",
+    logo: "/assets/company/bimaxpro.png",
+    period: "Octubre 2024 - Actualidad",
+    points: [
+      "Desarrollo e implementación de nuevas funcionalidades en aplicaciones web utilizando Angular, .NET, TypeScript y C#",
+      "Mantenimiento y optimización del código existente para mejorar rendimiento y estabilidad",
+      "Diagnóstico y resolución de errores en aplicaciones web para garantizar un funcionamiento eficiente",
+      "Colaboración con equipos multidisciplinarios para definir requisitos y mejorar la experiencia del usuario"
+    ]
+  },
+  {
+    title: "Freelancer Web Developer",
+    company: "Freelance",
+    logo: "/assets/company/freelancer.png",
+    period: "Julio 2022 - Septiembre 2024",
+    points: [
+      "Diseño y desarrollo de sitios web personalizados utilizando tecnologías modernas como React.js y Next.js",
+      "Optimización del rendimiento y la accesibilidad de las aplicaciones web para mejorar la experiencia del usuario",
+      "Mantenimiento y actualización de sitios web para garantizar su seguridad y compatibilidad",
+      "Comunicación directa con clientes para definir requisitos y garantizar la satisfacción del proyecto"
+    ]
+  },
+  {
+    title: "Técnico Informático",
+    company: "Ayuntamiento de Villacarrillo",
+    logo: "/assets/company/villacarrillo.png",
+    period: "Abril 2022 - Junio 2022",
+    points: [
+      "Mantenimiento y soporte técnico de equipos informáticos y redes en las dependencias municipales",
+      "Instalación y configuración de software y hardware para empleados del ayuntamiento",
+      "Resolución de incidencias relacionadas con sistemas operativos, aplicaciones y periféricos",
+      "Gestión y administración básica de servidores y bases de datos locales"
+    ]
+  }
+];
+---
+
+<section class="experience scroll-animate" id="work">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Experiencia Laboral.</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="timeline">
+      {experiences.map((exp, index) => (
+        <div class="timeline-item scroll-animate" style={`animation-delay: ${index * 0.2}s`}>
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="experience-header">
+              <div class="experience-title-wrapper">
+                <img src={exp.logo} alt={exp.company} class="company-logo" loading="lazy" />
+                <div>
+                  <h3 class="experience-title">{exp.title}</h3>
+                  <h4 class="experience-company">{exp.company}</h4>
+                </div>
+              </div>
+              <span class="experience-period">{exp.period}</span>
+            </div>
+            <ul class="experience-points">
+              {exp.points.map(point => (
+                <li>{point}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience {
+    position: relative;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3.75rem);
+    font-weight: 800;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-line {
+    width: 100px;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light));
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 3rem;
+  }
+
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2.5rem;
+    top: 0.5rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 20px rgba(245, 95, 23, 0.5);
+    z-index: 1;
+  }
+
+  .timeline-content {
+    background: var(--color-tertiary);
+    padding: 2rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-card);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+  }
+
+  .timeline-content:hover {
+    transform: translateX(10px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .timeline-content:hover::before {
+    opacity: 1;
+  }
+
+  .experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .experience-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+  }
+
+  .company-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: var(--border-radius-sm);
+    background: white;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .experience-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .experience-period {
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .experience-company {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .experience-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .experience-points li {
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    position: relative;
+  }
+
+  .experience-points li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 1.2rem;
+  }
+
+  .experience-points li:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .timeline {
+      padding-left: 1.5rem;
+    }
+
+    .timeline-dot {
+      left: -2rem;
+      width: 16px;
+      height: 16px;
+    }
+
+    .timeline-content {
+      padding: 1.5rem;
+    }
+
+    .experience-header {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .experience-title-wrapper {
+      width: 100%;
+    }
+
+    .company-logo {
+      width: 50px;
+      height: 50px;
+    }
+
+    .experience-title {
+      font-size: 1.25rem;
+    }
+
+    .experience-period {
+      align-self: flex-start;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .timeline {
+      padding-left: 1rem;
+    }
+
+    .timeline::before {
+      left: -0.5rem;
+    }
+
+    .timeline-dot {
+      left: -1.6rem;
+      width: 12px;
+      height: 12px;
+    }
+
+    .timeline-content {
+      padding: 1rem;
+    }
+
+    .experience-points li {
+      padding-left: 1rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>

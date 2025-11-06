@@ -1,21 +1,60 @@
 ---
+// Configuración de colores por categoría con gradientes (basado en categoryConfig de React)
+const categoryConfig: Record<string, { color: string; colorEnd: string; shadow: string }> = {
+  Frontend: { 
+    color: "#3b82f6", // blue-500
+    colorEnd: "#22d3ee", // cyan-400
+    shadow: "0 0 20px rgba(59, 130, 246, 0.5)"
+  },
+  Backend: { 
+    color: "#22c55e", // green-500
+    colorEnd: "#34d399", // emerald-400
+    shadow: "0 0 20px rgba(34, 197, 94, 0.5)"
+  },
+  Framework: { 
+    color: "#a855f7", // purple-500
+    colorEnd: "#a78bfa", // violet-400
+    shadow: "0 0 20px rgba(168, 85, 247, 0.5)"
+  },
+  Tools: { 
+    color: "#f97316", // orange-500
+    colorEnd: "#facc15", // yellow-400
+    shadow: "0 0 20px rgba(249, 115, 22, 0.5)"
+  },
+  DevOps: { 
+    color: "#ef4444", // red-500
+    colorEnd: "#f472b6", // pink-400
+    shadow: "0 0 20px rgba(239, 68, 68, 0.5)"
+  },
+  Design: { 
+    color: "#6366f1", // indigo-500
+    colorEnd: "#a855f7", // purple-400
+    shadow: "0 0 20px rgba(99, 102, 241, 0.5)"
+  },
+  Database: { 
+    color: "#14b8a6", // teal-500
+    colorEnd: "#22d3ee", // cyan-400
+    shadow: "0 0 20px rgba(20, 184, 166, 0.5)"
+  }
+};
+
 const technologies = [
-  { name: "HTML 5", icon: "/assets/tech/html.png", category: "Frontend", color: "#60a5fa" },
-  { name: "CSS 3", icon: "/assets/tech/css.png", category: "Frontend", color: "#60a5fa" },
-  { name: "JavaScript", icon: "/assets/tech/javascript.png", category: "Frontend", color: "#fbbf24" },
-  { name: "TypeScript", icon: "/assets/tech/typescript.png", category: "Frontend", color: "#60a5fa" },
-  { name: "Tailwind CSS", icon: "/assets/tech/tailwind.png", category: "Frontend", color: "#38bdf8" },
-  { name: "C#", icon: "/assets/tech/csharp.png", category: "Backend", color: "#a855f7" },
-  { name: "Node JS", icon: "/assets/tech/nodejs.png", category: "Backend", color: "#84cc16" },
-  { name: "Angular", icon: "/assets/tech/angular.png", category: "Framework", color: "#dc2626" },
-  { name: ".NET", icon: "/assets/tech/net.png", category: "Framework", color: "#8b5cf6" },
-  { name: "Git", icon: "/assets/tech/git.png", category: "Tools", color: "#f97316" },
-  { name: "Visual Studio", icon: "/assets/tech/visualestudio.png", category: "Tools", color: "#3b82f6" },
-  { name: "Postman", icon: "/assets/tech/postman.png", category: "Tools", color: "#f97316" },
-  { name: "Docker", icon: "/assets/tech/docker.png", category: "DevOps", color: "#0ea5e9" },
-  { name: "Figma", icon: "/assets/tech/figma.png", category: "Design", color: "#a855f7" },
-  { name: "PostgreSQL", icon: "/assets/tech/postgre.png", category: "Database", color: "#06b6d4" },
-  { name: "MySQL", icon: "/assets/tech/mysql.png", category: "Database", color: "#3b82f6" }
+  { name: "HTML 5", icon: "/assets/tech/html.png", category: "Frontend" },
+  { name: "CSS 3", icon: "/assets/tech/css.png", category: "Frontend" },
+  { name: "JavaScript", icon: "/assets/tech/javascript.png", category: "Frontend" },
+  { name: "TypeScript", icon: "/assets/tech/typescript.png", category: "Frontend" },
+  { name: "Tailwind CSS", icon: "/assets/tech/tailwind.png", category: "Frontend" },
+  { name: "C#", icon: "/assets/tech/csharp.png", category: "Backend" },
+  { name: "Node JS", icon: "/assets/tech/nodejs.png", category: "Backend" },
+  { name: "Angular", icon: "/assets/tech/angular.png", category: "Framework" },
+  { name: ".NET", icon: "/assets/tech/net.png", category: "Framework" },
+  { name: "Git", icon: "/assets/tech/git.png", category: "Tools" },
+  { name: "Visual Studio", icon: "/assets/tech/visualestudio.png", category: "Tools" },
+  { name: "Postman", icon: "/assets/tech/postman.png", category: "Tools" },
+  { name: "Docker", icon: "/assets/tech/docker.png", category: "DevOps" },
+  { name: "Figma", icon: "/assets/tech/figma.png", category: "Design" },
+  { name: "PostgreSQL", icon: "/assets/tech/postgre.png", category: "Database" },
+  { name: "MySQL", icon: "/assets/tech/mysql.png", category: "Database" }
 ];
 ---
 
@@ -32,15 +71,21 @@ const technologies = [
     </p>
 
     <div class="tech-grid">
-      {technologies.map((tech, index) => (
-        <div class="tech-card scroll-animate" style={`animation-delay: ${index * 0.05}s; --card-color: ${tech.color}`}>
-          <div class="tech-icon-wrapper">
-            <img src={tech.icon} alt={tech.name} class="tech-icon-img" loading="lazy" />
+      {technologies.map((tech, index) => {
+        const config = categoryConfig[tech.category];
+        return (
+          <div 
+            class="tech-card scroll-animate" 
+            style={`animation-delay: ${index * 0.05}s; --card-color: ${config.color}; --card-color-end: ${config.colorEnd}; --card-shadow: ${config.shadow}`}
+          >
+            <div class="tech-icon-wrapper">
+              <img src={tech.icon} alt={tech.name} class="tech-icon-img" loading="lazy" />
+            </div>
+            <h3 class="tech-name">{tech.name}</h3>
+            <span class="tech-category">{tech.category}</span>
           </div>
-          <h3 class="tech-name">{tech.name}</h3>
-          <span class="tech-category">{tech.category}</span>
-        </div>
-      ))}
+        );
+      })}
     </div>
   </div>
 </section>
@@ -83,12 +128,12 @@ const technologies = [
   }
 
   .tech-card {
-    background: var(--glass-bg);
+    background: linear-gradient(135deg, rgba(30,41,59,0.90) 0%, rgba(15,23,42,0.90) 100%);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 2rem 1.5rem;
     border-radius: var(--border-radius-md);
-    border: 2px solid transparent;
+    border: 2px solid rgba(255, 255, 255, 0.05);
     border-top: 3px solid var(--card-color);
     box-shadow: var(--glass-shadow);
     display: flex;
@@ -109,25 +154,20 @@ const technologies = [
     right: 0;
     bottom: 0;
     border-radius: var(--border-radius-md);
-    padding: 2px;
-    background: linear-gradient(180deg, var(--card-color), transparent);
-    -webkit-mask: 
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+    background: linear-gradient(135deg, var(--card-color), var(--card-color-end));
     opacity: 0;
     transition: opacity var(--transition-normal);
+    z-index: -1;
   }
 
   .tech-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--card-shadow);
     border-color: var(--card-color);
   }
 
   .tech-card:hover::before {
-    opacity: 0.5;
+    opacity: 0.1;
   }
 
   .tech-icon-wrapper {
@@ -136,24 +176,35 @@ const technologies = [
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.03);
+    background: linear-gradient(135deg, var(--card-color), var(--card-color-end));
     border-radius: 50%;
-    border: 2px solid var(--card-color);
+    border: 2px solid transparent;
     position: relative;
     transition: all var(--transition-normal);
-    padding: 1rem;
+    padding: 0.5rem;
+    box-shadow: var(--card-shadow);
+  }
+
+  .tech-icon-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: rgba(15, 23, 42, 0.95);
+    border-radius: 50%;
+    z-index: 0;
   }
 
   .tech-card:hover .tech-icon-wrapper {
     transform: scale(1.1);
-    box-shadow: 0 0 20px var(--card-color);
-    border-color: var(--card-color);
+    box-shadow: var(--card-shadow);
   }
 
   .tech-icon-img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    position: relative;
+    z-index: 1;
   }
 
   .tech-name {
@@ -167,17 +218,12 @@ const technologies = [
   .tech-category {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--card-color);
     text-align: center;
     padding: 0.25rem 0.75rem;
-    background: var(--card-color);
-    background: linear-gradient(135deg, var(--card-color), transparent);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    border: 1px solid var(--card-color);
+    background: linear-gradient(135deg, var(--card-color), var(--card-color-end));
+    color: white;
     border-radius: var(--border-radius-full);
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   @media (max-width: 1024px) {

@@ -411,21 +411,7 @@ section {
   animation: spin 1s linear infinite;
 }
 
-/* ==================== ACCESSIBILITY ==================== */
-.skip-to-content {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--color-accent);
-  color: white;
-  padding: 8px;
-  text-decoration: none;
-  z-index: 100;
-}
 
-.skip-to-content:focus {
-  top: 0;
-}
 
 /* ==================== PRINT ==================== */
 @media print {

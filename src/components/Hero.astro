@@ -43,6 +43,10 @@ import '../styles/components/hero.css';
           </div>
           <!-- Fragmentos de la burbuja para el efecto de explosión -->
           <div class="bubble-fragments"></div>
+          <!-- Bocadillo de texto -->
+          <div class="speech-bubble" id="speech-bubble">
+            <p>¡Houston, estamos explorando el portafolio! 🚀</p>
+          </div>
         </div>
       </div>
     </div>
@@ -61,6 +65,17 @@ import '../styles/components/hero.css';
     });
   });
 
+  // Mostrar bocadillo permanentemente al cargar
+  document.addEventListener('DOMContentLoaded', () => {
+    const speechBubble = document.getElementById('speech-bubble');
+    if (speechBubble) {
+      // Pequeño delay para animación de entrada
+      setTimeout(() => {
+        speechBubble.classList.add('show');
+      }, 500);
+    }
+  });
+
   // Bubble pop effect
   const bubbleContainer = document.getElementById('bubble-container');
   const astronaut = document.getElementById('astronaut');
@@ -70,6 +85,9 @@ import '../styles/components/hero.css';
   bubbleContainer?.addEventListener('click', () => {
     if (hasPopped) return;
     hasPopped = true;
+
+    // Obtener el bocadillo de texto
+    const speechBubble = document.getElementById('speech-bubble');
 
     // Crear fragmentos de la burbuja
     const numFragments = 20;
@@ -104,6 +122,13 @@ import '../styles/components/hero.css';
     if (particles) {
       particles.style.opacity = '0';
       particles.style.transition = 'opacity 0.3s ease-out';
+    }
+
+    // Ocultar el bocadillo con una animación suave
+    if (speechBubble) {
+      speechBubble.style.transition = 'all 0.5s ease-out';
+      speechBubble.style.opacity = '0';
+      speechBubble.style.transform = 'translateX(-100px) scale(0.8)';
     }
 
     // Animar el astronauta flotando al espacio con transiciones CSS suaves

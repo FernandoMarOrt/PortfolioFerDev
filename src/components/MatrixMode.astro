@@ -1,0 +1,152 @@
+---
+---
+
+<canvas class="matrix-canvas" id="matrix-canvas"></canvas>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
+    const ctx = canvas?.getContext('2d');
+    
+    if (!canvas || !ctx) return;
+
+    let matrixActive = false;
+    let animationFrame: number;
+    
+    // Easter egg: Type "matrix" to activate
+    let typedKeys = '';
+    const secretCode = 'matrix';
+    
+    document.addEventListener('keypress', (e) => {
+      typedKeys += e.key.toLowerCase();
+      if (typedKeys.length > secretCode.length) {
+        typedKeys = typedKeys.slice(-secretCode.length);
+      }
+      
+      if (typedKeys === secretCode) {
+        toggleMatrix();
+        typedKeys = '';
+      }
+    });
+
+    function toggleMatrix() {
+      matrixActive = !matrixActive;
+      
+      if (matrixActive) {
+        canvas.style.display = 'block';
+        resizeCanvas();
+        startMatrix();
+        
+        // Show notification
+        const notification = document.createElement('div');
+        notification.className = 'matrix-notification';
+        notification.textContent = '🔓 Matrix Mode Activated! Press ESC to exit';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.classList.add('show');
+        }, 100);
+        
+        setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => notification.remove(), 500);
+        }, 3000);
+      } else {
+        canvas.style.display = 'none';
+        cancelAnimationFrame(animationFrame);
+      }
+    }
+
+    // ESC to exit
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && matrixActive) {
+        toggleMatrix();
+      }
+    });
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', () => {
+      if (matrixActive) resizeCanvas();
+    });
+
+    function startMatrix() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/';
+      const fontSize = 16;
+      const columns = canvas.width / fontSize;
+      const drops: number[] = [];
+      
+      for (let i = 0; i < columns; i++) {
+        drops[i] = Math.random() * -100;
+      }
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#0F0';
+        ctx.font = `${fontSize}px monospace`;
+        
+        for (let i = 0; i < drops.length; i++) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+          
+          ctx.fillText(char, x, y);
+          
+          if (y > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          
+          drops[i]++;
+        }
+        
+        animationFrame = requestAnimationFrame(draw);
+      }
+      
+      draw();
+    }
+  });
+</script>
+
+<style>
+  .matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9997;
+    display: none;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  :global(.matrix-notification) {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 200, 0, 0.2));
+    backdrop-filter: blur(10px);
+    border: 2px solid #0F0;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    color: #0F0;
+    font-family: monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 10001;
+    opacity: 0;
+    transition: all 0.5s ease;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+  }
+
+  :global(.matrix-notification.show) {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>

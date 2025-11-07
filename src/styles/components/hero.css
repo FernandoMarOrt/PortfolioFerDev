@@ -109,6 +109,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.hero-avatar:hover {
+  transform: scale(1.02);
+}
+
+.hero-avatar.popping {
+  animation: shake 0.3s ease-out;
+}
+
+.hero-avatar.popped {
+  cursor: default;
 }
 
 .avatar-glow {
@@ -118,6 +132,7 @@
   border-radius: 50%;
   filter: blur(40px);
   animation: pulse 3s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .orbital-particles {
@@ -180,6 +195,7 @@
   box-shadow: 
     0 0 40px rgba(245, 95, 23, 0.3),
     inset 0 0 30px rgba(245, 95, 23, 0.1);
+  will-change: transform, opacity;
 }
 
 .avatar-image {
@@ -349,5 +365,84 @@
   .avatar-content {
     width: 240px;
     height: 240px;
+  }
+}
+
+/* Bubble Pop Animations */
+.bubble-fragments {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.bubble-fragment {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(circle, rgba(245, 95, 23, 0.6) 0%, rgba(255, 145, 77, 0.3) 50%, transparent 70%);
+  border-radius: 50%;
+  animation: fragmentExplode 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: var(--delay, 0s);
+  will-change: transform, opacity;
+}
+
+@keyframes fragmentExplode {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0) rotate(var(--rotation));
+    opacity: 0;
+  }
+}
+
+@keyframes bubblePop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes floatAway {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translate(50px, -100px) scale(0.8) rotate(45deg);
+    opacity: 0.8;
+  }
+  60% {
+    transform: translate(150px, -300px) scale(0.5) rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(300px, -600px) scale(0.1) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
   }
 }
